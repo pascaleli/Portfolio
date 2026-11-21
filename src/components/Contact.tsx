@@ -1,7 +1,5 @@
-"use client";
-
-import { useState } from "react";
-import { ArrowUpRight, Check, Copy, Mail, Shield } from "lucide-react";
+import { ArrowUpRight, Mail, Shield } from "lucide-react";
+import CopyEmailButton from "./CopyEmailButton";
 import { site } from "@/data/content";
 import { GithubIcon, LinkedinIcon } from "./BrandIcons";
 import { Card, Reveal, Section } from "./ui";
@@ -13,17 +11,6 @@ const links = [
 ];
 
 export default function Contact() {
-  const [copied, setCopied] = useState(false);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(site.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      window.location.href = `mailto:${site.email}`;
-    }
-  };
-
   return (
     <Section id="contact" className="pb-16 md:pb-20">
       <Reveal>
@@ -37,28 +24,21 @@ export default function Contact() {
             <h2 id="contact-title" className="mx-auto mt-5 max-w-3xl text-balance text-[clamp(2.1rem,5.5vw,3.75rem)] font-extrabold leading-[1.08] tracking-tight">
               Let&apos;s find your vulnerabilities before attackers do.
             </h2>
-            <p className="mx-auto mt-5 max-w-xl text-pretty text-lg text-white/85">
+            <p className="mx-auto mt-5 max-w-xl text-pretty text-lg text-white/95">
               Security audits, API and web pen tests, AI security reviews, or hands-on training for your team. Tell me what you&apos;re protecting.
             </p>
 
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a
                 href={`mailto:${site.email}?subject=Security%20engagement%20enquiry`}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-semibold text-brand shadow-[0_10px_30px_-10px_rgba(0,0,0,0.4)] transition hover:-translate-y-0.5 sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-semibold text-brand shadow-[0_10px_30px_-10px_rgba(0,0,0,0.4)] transition hover:-translate-y-0.5 focus-visible:outline-white sm:w-auto"
               >
                 <Mail size={18} aria-hidden /> Email me
               </a>
-              <button
-                type="button"
-                onClick={copy}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/40 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10 sm:w-auto"
-              >
-                {copied ? <Check size={16} aria-hidden /> : <Copy size={16} aria-hidden />}
-                <span className="break-all">{copied ? "Copied!" : site.email}</span>
-              </button>
-              <span role="status" className="sr-only">
-                {copied ? "Email address copied" : ""}
-              </span>
+              <CopyEmailButton
+                email={site.email}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/40 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline-white sm:w-auto"
+              />
             </div>
           </div>
         </div>

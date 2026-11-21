@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
-import { Bot, CheckCircle2, FileSearch, FileText, Lock, RotateCcw, ScanSearch, ShieldCheck, Sparkles, UserCheck, Zap } from "lucide-react";
+import { AnimatePresence, motion, useInView } from "motion/react";
+import { usePrefersReducedMotion } from "./usePrefersReducedMotion";
+import { Blocks, Bot, CheckCircle2, FileCode2, FileSearch, FileText, GitPullRequestClosed, Lock, RotateCcw, ScanSearch, ScrollText, ShieldCheck, Sparkles, UserCheck, Waypoints, Zap } from "lucide-react";
 import { aiWorkflow } from "@/data/content";
 import { Card, Reveal, Section, SectionHeading } from "./ui";
 
 const icons = {
+  threat: Waypoints,
+  policy: ScrollText,
+  enforce: GitPullRequestClosed,
   recon: ScanSearch,
   analyse: FileSearch,
   validate: UserCheck,
@@ -14,7 +18,7 @@ const icons = {
   regress: ShieldCheck,
 } as const;
 
-const principleIcons = [CheckCircle2, Lock, Zap];
+const principleIcons = [CheckCircle2, Lock, FileCode2, Zap];
 
 const lineColor = {
   cmd: "text-white",
@@ -26,9 +30,10 @@ const lineColor = {
 function TerminalReplay() {
   const ref = useRef<HTMLDivElement>(null);
   const started = useInView(ref, { once: true, margin: "-120px" });
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
   const lines = aiWorkflow.terminal;
-  const [shown, setShown] = useState(reduce ? lines.length : 0);
+  const [progress, setShown] = useState(0);
+  const shown = reduce ? lines.length : progress;
   const [typed, setTyped] = useState("");
   const [run, setRun] = useState(0);
 
@@ -81,8 +86,8 @@ function TerminalReplay() {
         <button
           type="button"
           onClick={replay}
-          className="ml-auto inline-flex items-center gap-1.5 rounded-md px-2 py-1 font-mono text-xs text-slate-300 transition hover:bg-white/10 hover:text-white disabled:opacity-40"
-          disabled={!done || !!reduce}
+          className="ml-auto inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 font-mono text-xs text-slate-300 transition hover:bg-white/10 hover:text-white disabled:opacity-40"
+          disabled={!done || reduce}
           aria-label="Replay terminal session"
         >
           <RotateCcw size={12} aria-hidden /> replay
@@ -90,8 +95,7 @@ function TerminalReplay() {
       </div>
       <div
         className="min-h-[300px] flex-1 space-y-1.5 overflow-x-auto p-5 font-mono text-[0.78rem] leading-relaxed sm:text-[0.82rem]"
-        role="log"
-        aria-label="Example AI-assisted security audit session"
+        aria-hidden
       >
         {lines.slice(0, shown).map((l, i) => (
           <p key={`${run}-${i}`} className={`whitespace-pre-wrap break-words ${lineColor[l.type as keyof typeof lineColor]}`}>
@@ -113,6 +117,12 @@ function TerminalReplay() {
           </p>
         )}
       </div>
+      <ol className="sr-only" aria-label="Illustrative AI-assisted security audit session">
+        {lines.map((l, i) => (
+          <li key={i}>{l.text}</li>
+        ))}
+      </ol>
+      <p className="border-t border-white/10 px-5 py-2.5 text-[0.7rem] text-slate-400">Illustrative session. Targets and findings are representative, not from a client engagement.</p>
     </div>
   );
 }
@@ -120,8 +130,8 @@ function TerminalReplay() {
 export default function AIWorkflow() {
   const [active, setActive] = useState(0);
   const step = aiWorkflow.pipeline[active];
-  const reduce = useReducedMotion();
   const n = aiWorkflow.pipeline.length;
+  const pad = (v: number | string) => String(v).padStart(2, "0");
 
   const focusTab = (i: number) => {
     setActive(i);
@@ -152,7 +162,7 @@ export default function AIWorkflow() {
         <div className="ai-frame p-4 sm:p-6 lg:p-10">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
             <p className="inline-flex items-center gap-2 rounded-full bg-violet/10 px-3 py-1 text-sm font-semibold text-violet">
-              <Sparkles size={15} aria-hidden /> My agentic audit pipeline
+              <Sparkles size={15} aria-hidden /> Agentic security & quality pipeline
             </p>
             <ul className="flex flex-wrap gap-1.5" aria-label="Tools in this workflow">
               {aiWorkflow.tools.map((t) => (
@@ -164,18 +174,18 @@ export default function AIWorkflow() {
           </div>
 
           {/* Pipeline */}
-          <div role="tablist" aria-label="Workflow stages" className="relative grid gap-3 md:grid-cols-5 md:gap-0">
+          <div role="tablist" aria-label="Workflow stages" className="relative grid gap-3 md:grid-cols-4 md:gap-x-0 md:gap-y-8">
             {aiWorkflow.pipeline.map((p, i) => {
               const Icon = icons[p.id as keyof typeof icons];
               const isActive = i === active;
               const isHuman = p.id === "validate";
               return (
-                <div key={p.id} className="relative">
+                <div key={p.id} role="presentation" className="relative">
+                  {i < n - 1 && i % 4 !== 3 && (
+                    <span aria-hidden className="absolute left-[calc(50%+2.25rem)] right-[calc(-50%+2.25rem)] top-[2.1rem] hidden h-[2px] opacity-40 flow-line md:block" />
+                  )}
                   {i < n - 1 && (
-                    <>
-                      <span aria-hidden className="absolute left-[calc(50%+2.25rem)] right-[calc(-50%+2.25rem)] top-[2.1rem] hidden h-[2px] opacity-40 flow-line md:block" />
-                      <span aria-hidden className="absolute bottom-[-0.75rem] left-[2.05rem] top-[4rem] w-[2px] opacity-40 flow-line-v md:hidden" />
-                    </>
+                    <span aria-hidden className="absolute bottom-[-0.75rem] left-[2.05rem] top-[4rem] w-[2px] opacity-40 flow-line-v md:hidden" />
                   )}
                   <button
                     type="button"
@@ -212,7 +222,7 @@ export default function AIWorkflow() {
                       }`}
                     >
                       <Icon size={22} aria-hidden />
-                      {isActive && !reduce && (
+                      {isActive && (
                         <motion.span
                           layoutId="ai-ring"
                           className={`absolute -inset-1.5 rounded-[1.2rem] border-2 ${isHuman ? "border-accent/30" : "border-brand/30"}`}
@@ -234,31 +244,61 @@ export default function AIWorkflow() {
             })}
           </div>
 
+          {/* Reusable agent skills layer */}
+          <div className="mt-10 rounded-2xl border border-violet/15 bg-violet/[0.04] p-5 md:p-6">
+            <p className="flex items-center gap-2 text-sm font-bold text-text">
+              <Blocks size={17} className="text-violet" aria-hidden /> Reusable agent Skills powering each stage
+            </p>
+            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+              {aiWorkflow.skills.map((sk) => {
+                const on = sk.name === step.skill;
+                return (
+                  <li
+                    key={sk.name}
+                    className={`rounded-xl border px-3.5 py-2.5 transition-colors duration-300 ${
+                      on ? "border-violet/50 bg-white shadow-card" : "border-line bg-white/70"
+                    }`}
+                  >
+                    <span className={`block font-mono text-sm font-medium ${on ? "text-violet" : "text-text"}`}>{sk.name}</span>
+                    <span className="block text-xs leading-snug text-muted">{sk.text}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
           {/* Stage detail + terminal */}
           <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_1.15fr]">
             <div
               id="ai-stage-panel"
               role="tabpanel"
               aria-labelledby={`tab-${step.id}`}
+              tabIndex={0}
               className="flex flex-col rounded-2xl border border-line bg-bg p-6 md:p-8"
             >
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={step.id}
-                  initial={reduce ? false : { opacity: 0, x: 12 }}
+                  initial={{ opacity: 0, x: 12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={reduce ? undefined : { opacity: 0, x: -12 }}
+                  exit={{ opacity: 0, x: -12 }}
                   transition={{ duration: 0.25 }}
                   className="flex-1"
                 >
                   <p className="text-sm font-semibold text-brand">
-                    Step {step.step} of 0{n}
+                    Step {step.step} of {pad(n)}
                   </p>
                   <h3 className="mt-2 text-2xl font-extrabold text-text">{step.title}</h3>
                   <p className="mt-3 text-pretty leading-relaxed text-muted">{step.text}</p>
-                  <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm">
-                    <span className="text-muted">Output</span>
-                    <span className="font-mono font-medium text-accent">{step.output}</span>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm">
+                      <span className="text-muted">Skill</span>
+                      <span className="font-mono font-medium text-violet">{step.skill}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm">
+                      <span className="text-muted">Output</span>
+                      <span className="font-mono font-medium text-accent">{step.output}</span>
+                    </span>
                   </div>
                 </motion.div>
               </AnimatePresence>
@@ -274,7 +314,7 @@ export default function AIWorkflow() {
       </Reveal>
 
       <Reveal>
-        <ul className="mt-10 grid gap-5 md:grid-cols-3">
+        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {aiWorkflow.principles.map((p, i) => {
             const Icon = principleIcons[i % principleIcons.length];
             return (

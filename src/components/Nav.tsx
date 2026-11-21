@@ -31,6 +31,14 @@ export default function Nav() {
   }, []);
 
   // Mobile menu: lock scroll, Escape closes, trap focus
+  // Close the mobile menu if the viewport grows to desktop width
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => mq.matches && setOpen(false);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     document.body.style.overflow = "hidden";
@@ -41,7 +49,9 @@ export default function Nav() {
         toggleRef.current?.focus();
       }
       if (e.key === "Tab" && menuRef.current) {
-        const f = Array.from(menuRef.current.querySelectorAll<HTMLElement>("a,button"));
+        const f = [toggleRef.current, ...Array.from(menuRef.current.querySelectorAll<HTMLElement>("a,button"))].filter(
+          (el): el is HTMLElement => !!el
+        );
         if (e.shiftKey && document.activeElement === f[0]) {
           e.preventDefault();
           f[f.length - 1].focus();
@@ -71,7 +81,7 @@ export default function Nav() {
           </span>
           <span className="leading-tight">
             <span className="block text-[0.95rem] font-bold text-text">{site.name}</span>
-            <span className="block text-[0.7rem] font-medium text-muted">Cybersecurity Consultant</span>
+            <span className="block text-[0.7rem] font-medium text-muted">MSc · Software Quality & AppSec</span>
           </span>
         </a>
 

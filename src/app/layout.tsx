@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { site, experience, certifications } from "@/data/content";
+import Providers from "@/components/Providers";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -43,11 +44,13 @@ export const metadata: Metadata = {
     description: site.description,
     siteName: site.name,
     locale: "en_US",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: `${site.name}, Cybersecurity Consultant` }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.name} | Cybersecurity Consultant`,
     description: site.description,
+    images: ["/og.png"],
   },
   robots: { index: true, follow: true },
 };
@@ -67,7 +70,10 @@ const jsonLd = {
   url: site.url,
   image: `${site.url}/pascal.jpg`,
   jobTitle: experience[0].role,
-  worksFor: { "@type": "Organization", name: "ParoCyber" },
+  worksFor: [
+    { "@type": "Organization", name: "Purple Wave Auction" },
+    { "@type": "Organization", name: "ParoCyber" },
+  ],
   address: { "@type": "PostalAddress", addressLocality: "Accra", addressCountry: "GH" },
   alumniOf: [
     { "@type": "CollegeOrUniversity", name: "University of Ghana" },
@@ -83,6 +89,11 @@ const jsonLd = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${jakarta.variable} ${jetbrains.variable}`}>
+      <head>
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body>
         <a
           href="#main"
@@ -90,7 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        {children}
+        <Providers>{children}</Providers>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

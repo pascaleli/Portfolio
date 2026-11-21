@@ -11,8 +11,8 @@
   --muted: #4a5a73;       /* 7.0:1 */
   --brand: #1d5cff;       /* confident blue, 5.0:1 */
   --brand-2: #0ea5e9;     /* sky, gradients only */
-  --accent: #0a8a66;      /* emerald, 4.6:1 */
-  --violet: #6d4aff;      /* AI accent, 5.6:1 */
+  --accent: #067556;      /* emerald, 5.7:1 */
+  --violet: #5b3df0;      /* AI accent, 6.3:1 */
   --danger: #e5484d;
   --ink: #0b1530;         /* dark code panels */
   color-scheme: light;
@@ -77,12 +77,6 @@ body {
   color: transparent;
 }
 
-/* Soft dotted texture for alternating sections */
-.bg-dots {
-  background-image: radial-gradient(rgba(11, 27, 51, 0.07) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-
 /* Gradient hairline border for the AI showcase */
 .ai-frame {
   position: relative;
@@ -129,6 +123,17 @@ body {
 }
 @keyframes blink {
   50% { opacity: 0; }
+}
+
+/* CSS-only entrance for above-the-fold content: visible without JS,
+   finishes instantly under reduced motion (see media query below). */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0s);
 }
 
 /* Slow floating for hero badges */

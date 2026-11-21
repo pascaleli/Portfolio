@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Bot, Bug, Check, Server, Workflow } from "lucide-react";
 import { projects, type Project } from "@/data/content";
 import { Chip, Section, SectionHeading } from "./ui";
@@ -18,7 +18,6 @@ const cat: Record<Project["category"], { icon: typeof Bot; tint: string; bar: st
 
 export default function Projects() {
   const [filter, setFilter] = useState<Filter>("All");
-  const reduce = useReducedMotion();
   const list = filter === "All" ? projects : projects.filter((p) => p.category === filter);
 
   return (
@@ -49,19 +48,23 @@ export default function Projects() {
           </button>
         ))}
       </div>
+      <p className="sr-only" aria-live="polite">
+        Showing {list.length} {list.length === 1 ? "project" : "projects"}
+        {filter === "All" ? "" : ` in ${filter}`}
+      </p>
 
-      <motion.ul layout={!reduce} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
+      <motion.ul layout className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <AnimatePresence mode="popLayout" initial={false}>
           {list.map((p) => {
             const c = cat[p.category];
             const Icon = c.icon;
             return (
               <motion.li
                 key={p.title}
-                layout={!reduce}
-                initial={reduce ? false : { opacity: 0, scale: 0.97 }}
+                layout
+                initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={reduce ? undefined : { opacity: 0, scale: 0.97 }}
+                exit={{ opacity: 0, scale: 0.97 }}
                 transition={{ duration: 0.3 }}
               >
                 <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-bg shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-lift motion-reduce:hover:translate-y-0">

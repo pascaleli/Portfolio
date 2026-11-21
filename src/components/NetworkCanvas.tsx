@@ -52,6 +52,7 @@ export default function NetworkCanvas({ className = "" }: { className?: string }
     const draw = (dt: number) => {
       ctx.clearRect(0, 0, w, h);
       const LD = linkDist();
+      const LD2 = LD * LD;
 
       for (const n of nodes) {
         n.x += n.vx * dt * 0.06;
@@ -69,8 +70,11 @@ export default function NetworkCanvas({ className = "" }: { className?: string }
         for (let j = i + 1; j < nodes.length; j++) {
           const a = nodes[i];
           const b = nodes[j];
-          const dist = Math.hypot(a.x - b.x, a.y - b.y);
-          if (dist < LD) {
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < LD2) {
+            const dist = Math.sqrt(d2);
             ctx.strokeStyle = `rgba(29,92,255,${(1 - dist / LD) * 0.18})`;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);

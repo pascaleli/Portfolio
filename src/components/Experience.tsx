@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { Check, ChevronDown, MapPin, Quote } from "lucide-react";
 import { experience, testimonials } from "@/data/content";
 import { Reveal, Section, SectionHeading } from "./ui";
 
 export default function Experience() {
   const [open, setOpen] = useState<number | null>(0);
-  const reduce = useReducedMotion();
+  // Only animate panels the visitor opens; the default-open panel renders statically (visible without JS).
+  const [touched, setTouched] = useState(false);
 
   return (
     <Section id="experience" tinted>
@@ -17,7 +18,7 @@ export default function Experience() {
         eyebrow="Experience"
         title={
           <>
-            From network cables <span className="text-gradient">to AppSec leadership</span>.
+            From network cables, software quality, automation engineering to <span className="text-gradient">application security leadership</span>.
           </>
         }
         lede="Nearly a decade across networking, development, quality engineering and security. Select a role to see the details."
@@ -46,7 +47,10 @@ export default function Experience() {
                       type="button"
                       aria-expanded={isOpen}
                       aria-controls={panelId}
-                      onClick={() => setOpen(isOpen ? null : i)}
+                      onClick={() => {
+                        setTouched(true);
+                        setOpen(isOpen ? null : i);
+                      }}
                       className="flex w-full items-start justify-between gap-4 p-5 text-left md:p-6"
                     >
                       <span className="min-w-0">
@@ -75,16 +79,14 @@ export default function Experience() {
                       </span>
                     </button>
                   </h3>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        id={panelId}
-                        initial={reduce ? false : { height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={reduce ? undefined : { height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                        className="overflow-hidden"
-                      >
+                  <div id={panelId} hidden={!isOpen}>
+                    <motion.div
+                      key={isOpen ? "open" : "closed"}
+                      initial={touched ? { height: 0, opacity: 0 } : false}
+                      animate={{ height: "auto", opacity: 1 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
                         {job.progression && (
                           <ol aria-label="Role progression" className="mx-5 mb-5 space-y-2 rounded-xl border border-line bg-white p-4 md:mx-6">
                             {job.progression.map((r, k) => (
@@ -103,9 +105,8 @@ export default function Experience() {
                             </li>
                           ))}
                         </ul>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                    </motion.div>
+                  </div>
                 </div>
               </Reveal>
             </li>

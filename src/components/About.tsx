@@ -1,8 +1,8 @@
-import { Briefcase, GraduationCap, Languages, MapPin, Target } from "lucide-react";
+import { Briefcase, GraduationCap, Languages, Target } from "lucide-react";
 import { about, education } from "@/data/content";
 import { Reveal, Section, SectionHeading } from "./ui";
 
-const factIcons = [MapPin, Target, Briefcase, Languages];
+const factIcons = [GraduationCap, Target, Briefcase, Languages];
 
 export default function About() {
   return (
@@ -14,7 +14,7 @@ export default function About() {
             eyebrow="About me"
             title={
               <>
-                From quality engineer to <span className="text-gradient">security lead</span>.
+                From quality engineer, automation engineer to <span className="text-gradient">security lead</span>.
               </>
             }
           />
@@ -49,14 +49,14 @@ export default function About() {
 
           <Reveal delay={0.1}>
             <div className="rounded-2xl bg-gradient-to-br from-brand to-[#3b2bd9] p-6 text-white shadow-lift">
-              <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white/80">
+              <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white">
                 <GraduationCap size={18} aria-hidden /> Education
               </p>
               <ul className="mt-4 space-y-4">
                 {education.map((e) => (
                   <li key={e.degree}>
                     <p className="text-lg font-bold leading-snug">{e.degree}</p>
-                    <p className="text-sm text-white/80">
+                    <p className="text-sm text-white/95">
                       {e.school} · {e.year}
                     </p>
                   </li>
