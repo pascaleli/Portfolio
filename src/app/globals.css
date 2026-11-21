@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/* Bright, professional palette. Contrast ratios are against #ffffff. */
+:root {
+  --bg: #f7f9fc;          /* page canvas */
+  --surface: #ffffff;     /* cards */
+  --surface-2: #eef3fb;   /* subtle fills, chips */
+  --line: #e3e9f2;
+  --line-strong: #cdd7e6;
+  --text: #0b1b33;        /* deep navy, 16.9:1 */
+  --muted: #4a5a73;       /* 7.0:1 */
+  --brand: #1d5cff;       /* confident blue, 5.0:1 */
+  --brand-2: #0ea5e9;     /* sky, gradients only */
+  --accent: #0a8a66;      /* emerald, 4.6:1 */
+  --violet: #6d4aff;      /* AI accent, 5.6:1 */
+  --danger: #e5484d;
+  --ink: #0b1530;         /* dark code panels */
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-accent: var(--accent);
+  --color-violet: var(--violet);
+  --color-danger: var(--danger);
+  --color-ink: var(--ink);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-jetbrains);
+  --shadow-card: 0 1px 2px rgba(11, 27, 51, 0.04), 0 8px 24px -12px rgba(11, 27, 51, 0.12);
+  --shadow-lift: 0 2px 4px rgba(11, 27, 51, 0.04), 0 24px 48px -20px rgba(29, 92, 255, 0.28);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(29, 92, 255, 0.18);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--brand) 10%, var(--brand-2) 55%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-ai {
+  background: linear-gradient(100deg, var(--brand), var(--violet) 60%, #c026d3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Soft dotted texture for alternating sections */
+.bg-dots {
+  background-image: radial-gradient(rgba(11, 27, 51, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Gradient hairline border for the AI showcase */
+.ai-frame {
+  position: relative;
+  border-radius: 1.75rem;
+  background: linear-gradient(var(--surface), var(--surface)) padding-box,
+    conic-gradient(from var(--angle), #1d5cff, #6d4aff, #0ea5e9, #0a8a66, #1d5cff) border-box;
+  border: 1.5px solid transparent;
+  animation: spin-border 10s linear infinite;
+  box-shadow: 0 40px 80px -40px rgba(29, 92, 255, 0.35);
+}
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin-border {
+  to { --angle: 360deg; }
+}
+
+/* Flowing dashes along the pipeline connector */
+.flow-line {
+  background-image: linear-gradient(90deg, var(--brand) 50%, transparent 50%);
+  background-size: 10px 2px;
+  animation: flow 1s linear infinite;
+}
+.flow-line-v {
+  background-image: linear-gradient(180deg, var(--brand) 50%, transparent 50%);
+  background-size: 2px 10px;
+  animation: flow-v 1s linear infinite;
+}
+@keyframes flow { to { background-position: 10px 0; } }
+@keyframes flow-v { to { background-position: 0 10px; } }
+
+/* Thin typing caret */
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 3px;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: blink 1.05s steps(1) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Slow floating for hero badges */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float { animation: float 6s ease-in-out infinite; }
+.float-delay { animation: float 6s ease-in-out 1.5s infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
