@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/data/content";
 
 export const dynamic = "force-static";
 
+// Crawling stays allowed on purpose: search engines must be able to fetch the
+// pages to see the "noindex" instruction and drop them from results.
+// Blocking crawling here would leave already-indexed pages stuck in results.
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/" },
-    sitemap: `${site.url}/sitemap.xml`,
   };
 }

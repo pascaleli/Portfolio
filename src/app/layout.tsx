@@ -52,7 +52,13 @@ export const metadata: Metadata = {
     description: site.description,
     images: ["/og.png"],
   },
-  robots: { index: true, follow: true },
+  // Owner opted out of search engines (2026-11-21). Site stays public via direct link.
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: { index: false, follow: false, noimageindex: true },
+  },
   verification: { google: "TvdNoDXQgPTnHXycj6QYpNI4SZCGelN6KTlb5jZJEFA" },
 };
 
