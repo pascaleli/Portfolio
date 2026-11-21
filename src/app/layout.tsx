@@ -53,6 +53,7 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
   robots: { index: true, follow: true },
+  verification: { google: "TvdNoDXQgPTnHXycj6QYpNI4SZCGelN6KTlb5jZJEFA" },
 };
 
 export const viewport: Viewport = {
