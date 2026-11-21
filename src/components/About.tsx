@@ -29,7 +29,7 @@ export default function About() {
 
         <div className="space-y-5 lg:pt-24">
           <Reveal>
-            <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
               {about.facts.map((f, i) => {
                 const Icon = factIcons[i % factIcons.length];
                 return (

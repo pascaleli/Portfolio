@@ -6,12 +6,12 @@ import { ArrowUpRight, Bot, Bug, Check, Server, Workflow } from "lucide-react";
 import { projects, type Project } from "@/data/content";
 import { Chip, Section, SectionHeading } from "./ui";
 
-const filters = ["All", "AI Security", "AppSec", "Infrastructure", "Automation"] as const;
+const filters = ["All", "AI Security", "Application Security", "Infrastructure", "Automation"] as const;
 type Filter = (typeof filters)[number];
 
 const cat: Record<Project["category"], { icon: typeof Bot; tint: string; bar: string }> = {
   "AI Security": { icon: Bot, tint: "bg-violet/10 text-violet", bar: "from-violet to-brand" },
-  AppSec: { icon: Bug, tint: "bg-danger/10 text-danger", bar: "from-danger to-[#f59e0b]" },
+  "Application Security": { icon: Bug, tint: "bg-danger/10 text-danger", bar: "from-danger to-[#f59e0b]" },
   Infrastructure: { icon: Server, tint: "bg-brand/10 text-brand", bar: "from-brand to-brand-2" },
   Automation: { icon: Workflow, tint: "bg-accent/10 text-accent", bar: "from-accent to-brand-2" },
 };

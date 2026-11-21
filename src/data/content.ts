@@ -11,7 +11,7 @@ export const site = {
   email: "pascalhugues0104@gmail.com",
   roles: [
     "a Senior Software Quality Engineer | Automation Engineer",
-    "an AppSec Consultant (Independent)",
+    "an Application Security Consultant (Independent)",
     "a Cybersecurity Lecturer",
     "the Co-Founder of ParoCyber",
   ],
@@ -41,7 +41,7 @@ export const about = {
   ],
   facts: [
     { k: "Education", v: "MSc Computer Science, University of Ghana" },
-    { k: "Focus", v: "AppSec · API Pen Testing · Audit" },
+    { k: "Focus", v: "Software\u00a0Quality\u00a0Engineering · Automation\u00a0Engineering · Application\u00a0Security\u00a0(AI) · Audit" },
     { k: "Currently", v: "Purple Wave Auction · ParoCyber" },
     { k: "Languages", v: "English & French (fluent)" },
   ],
@@ -171,7 +171,7 @@ export const aiWorkflow = {
 
 export type Project = {
   title: string;
-  category: "AI Security" | "AppSec" | "Infrastructure" | "Automation";
+  category: "AI Security" | "Application Security" | "Infrastructure" | "Automation";
   summary: string;
   bullets: string[];
   tags: string[];
@@ -192,8 +192,8 @@ export const projects: Project[] = [
     tags: ["OWASP LLM Top 10", "Prompt Injection", "Claude", "Threat Modeling"],
   },
   {
-    title: "ParoCyberBank: AppSec Training Lab",
-    category: "AppSec",
+    title: "ParoCyberBank: Application Security Training Lab",
+    category: "Application Security",
     summary:
       "A deliberately vulnerable online banking app with web UI and REST API, built to teach application security hands-on at ParoCyber.",
     bullets: [
@@ -320,7 +320,7 @@ export const experience: Job[] = [
       "Scale enterprise Playwright frameworks, automating 100+ critical test scenarios with the team",
       "Integrate AI-driven testing to accelerate pipelines and generate high-quality tests",
       "Coordinate weekly global releases with distributed teams across the US, India and Ghana",
-      "Validate security patches and core system upgrades; mentor teams through talks on testing, automation and AppSec",
+      "Validate security patches and core system upgrades; mentor teams through talks on testing, automation and application security",
     ],
   },
   {
@@ -335,7 +335,7 @@ export const experience: Job[] = [
       "Fuzzing and testing with Burp Suite; discovered multiple bugs and ran in-depth security analyses",
       "Execute automated and manual security testing methodologies",
       "Manage SIEM tooling such as Splunk",
-      "Cybersecurity lecturer: teach hands-on AppSec and OWASP courses, growing the student base significantly",
+      "Cybersecurity lecturer: teach hands-on application security and OWASP courses, growing the student base significantly",
     ],
   },
   {

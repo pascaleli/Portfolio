@@ -20,7 +20,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Cybersecurity Consultant & AppSec Pen Tester`,
+    default: `${site.fullName} (Pascal A. Tamekloe) | Senior Software Quality Engineer & Application Security Consultant`,
     template: `%s | ${site.name}`,
   },
   description: site.description,

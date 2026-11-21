@@ -81,7 +81,7 @@ export default function Nav() {
           </span>
           <span className="leading-tight">
             <span className="block text-[0.95rem] font-bold text-text">{site.name}</span>
-            <span className="block text-[0.7rem] font-medium text-muted">MSc · Software Quality & AppSec</span>
+            <span className="block text-[0.7rem] font-medium text-muted">MSc · Software Quality & Application Security</span>
           </span>
         </a>
 
